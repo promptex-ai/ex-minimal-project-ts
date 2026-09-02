@@ -1,0 +1,10 @@
+{
+  "platform": "claude",
+  "engineVersion": "0.0.0",
+  "files": [
+    {
+      "path": ".claude/rules/example-rule.md",
+      "kind": "text"
+    }
+  ]
+}

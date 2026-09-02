@@ -1,0 +1,13 @@
+{
+  "name": "ex-minimal-project-ts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "promptex build .",
+    "install:prompts": "promptex install ."
+  },
+  "dependencies": {
+    "promptex-js": "^0.0.0"
+  }
+}
