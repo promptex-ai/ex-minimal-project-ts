@@ -17,7 +17,7 @@
 
 ## 參數宣告
 
-參數宣告（標準 JSON Schema）住擴展目錄根的 `promptex.config.schema.json`，由 `src/index.ts` 自己 import，隨中介表示交給讀取端；`promptex config declare ex-minimal-adapter-ts` 讀的是同一份檔案。
+參數宣告（標準 JSON Schema）住擴展目錄根的 `promptex.config.schema.json`，由 `src/index.ts` 在載入時讀進來（執行期讀檔而非編譯期 JSON import，產物樹因此保持扁平、全包只留套件根那一份），隨中介表示交給讀取端；`promptex config declare ex-minimal-adapter-ts` 讀的是同一份檔案。
 
 ## 發布
 

@@ -5,8 +5,15 @@
 //
 // adapter 綁語言：本套件服務 TypeScript 專案；Python／Rust 專案要用同一個
 // 平台時，各自以該語言的 SDK 實作一份。
-import configSchema from '../promptex.config.schema.json' with { type: 'json' }
+import { readFileSync } from 'node:fs'
+
 import { defineTarget, type AdapterContext, type AdapterTarget, type PluginEntry } from 'promptex-js'
+
+// 參數宣告（標準 JSON Schema）住套件根，由本檔在載入時讀進來。用執行期讀檔而非
+// 編譯期 import：JSON 在 include 的 src 之外，靜態 import 會把編譯器的共同來源根
+// 抬到套件根，產物因此多一層 src/，包裡還會留下第二份 schema。改讀檔之後
+// src/index.ts 與 dist/index.js 對套件根的相對位置相同，兩種形態都指向同一份。
+const configSchema = JSON.parse(readFileSync(new URL('../promptex.config.schema.json', import.meta.url), 'utf8'))
 
 /** 建構參數：與 promptex.config.schema.json 的宣告一一對應。 */
 export interface Options {
@@ -71,7 +78,7 @@ export default function target(options: Options = {}): AdapterTarget {
     return files
   }
 
-  // 參數宣告（標準 JSON Schema）：由本檔自己 import、隨中介表示交給讀取端；
+  // 參數宣告隨中介表示交給讀取端；
   // `promptex config declare` 讀的是套件根的同一份檔案。
   return defineTarget('ex-minimal-adapter-ts', emit, { configSchema })
 }
