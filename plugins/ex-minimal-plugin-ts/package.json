@@ -1,0 +1,54 @@
+{
+  "name": "ex-minimal-plugin-ts",
+  "version": "0.0.1-alpha.1",
+  "description": "promptex plugin 擴展範例（alpha）：在改寫遍為 skill 與 rule 追加一行",
+  "license": "Apache-2.0",
+  "author": "promptex-ai",
+  "homepage": "https://github.com/promptex-ai/ex-minimal-project-ts#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/promptex-ai/ex-minimal-project-ts.git",
+    "directory": "plugins/ex-minimal-plugin-ts"
+  },
+  "bugs": {
+    "url": "https://github.com/promptex-ai/ex-minimal-project-ts/issues"
+  },
+  "keywords": [
+    "promptex",
+    "promptex-plugin",
+    "prompt",
+    "ai",
+    "llm",
+    "agent",
+    "codegen"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "files": [
+    "dist",
+    "promptex.config.schema.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "promptex-js": "^0.0.0"
+  },
+  "devDependencies": {
+    "promptex-js": "^0.0.0",
+    "typescript": "^5.7.0"
+  }
+}
