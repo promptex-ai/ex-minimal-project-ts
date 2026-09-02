@@ -1,9 +1,6 @@
----
-paths:
-  - prompts/**
----
-
 # 範例規則
+
+適用範圍：prompts/**
 
 這是 promptex init 產出的範例資源，可依專案需求修改或刪除。
 

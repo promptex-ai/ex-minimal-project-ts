@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ex-minimal-plugin-ts options",
+  "type": "object",
+  "properties": {
+    "banner": {
+      "type": "string",
+      "description": "Appended to every skill and rule at the transform stage. Defaults to a built-in notice."
+    }
+  },
+  "additionalProperties": false
+}

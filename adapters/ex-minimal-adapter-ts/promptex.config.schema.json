@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ex-minimal-adapter-ts options",
+  "type": "object",
+  "properties": {
+    "root": {
+      "type": "string",
+      "description": "Root directory for emitted artifacts, relative to the install root. Defaults to \".ex-minimal-adapter-ts\"."
+    }
+  },
+  "additionalProperties": false
+}
