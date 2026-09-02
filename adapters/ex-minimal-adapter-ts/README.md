@@ -29,6 +29,6 @@ npm publish --tag alpha --access public
 
 `prepack` 綁著 `tsc`，`npm publish` 會自己先建置；`files` 只放 `dist`、參數宣告、README 與 LICENSE。發到 `alpha` 標籤而非 `latest`：預發布版不該被 `npm install` 預設選中，安裝端寫 `npm install ex-minimal-plugin-ts@alpha`。
 
-發布前先把 SDK 依賴換掉：`peerDependencies` 與 `devDependencies` 的 `promptex-js: ^0.0.0` 指的是開發中的本地 SDK，registry 上沒有這個版本——目前只有 alpha 原型 `0.0.1-alpha.1`，且它只有 `defineSkill` 與 `build` 那一條最窄路徑，不含本擴展用到的 plugin 與適配介面。在換掉之前，依賴解析這一步就會失敗（npm 報 `ETARGET`、cargo 報 `no matching package`、uv 解不出方案），上面第一道指令跑不完。
+SDK 依賴不必換：`peerDependencies` 與 `devDependencies` 的 `promptex-js: ^0.0.0` 在 registry 上對到的是 promptex-prototype 發的 `0.0.0` **介面樁**——型別與簽名逐字複製正式版、方法本體一律拋錯。發布驗證（尤其 `cargo publish` 的建置）拿它編得過；裝到消費端也裝得起來，但實際執行要靠工作區覆寫指向本地的正式版 SDK，否則第一個碰到樁的呼叫就會以「promptex 介面樁」開頭的錯誤中止。
 
 名稱刻意不帶 `promptex-adapter-` 前綴——那是給要被消費端搜尋到的套件用的；本擴展的定位是示範，改以 keywords 的 `promptex-adapter` 承載可搜尋性。
