@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "promptex build .",
-    "install:prompts": "promptex install ."
+    "install:prompts": "promptex build --install ."
   },
   "dependencies": {
     "promptex-js": "^0.0.0"

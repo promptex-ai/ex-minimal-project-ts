@@ -18,7 +18,7 @@ promptex 的最小 TypeScript 消費端專案，同時是 [promptex-resources-ts
 
 ```bash
 pnpm install
-npx promptex install .
+npx promptex build --install .
 ```
 
 產物落在專案根（配置單元的 `out_dir` 是 `.`），並隨源碼一起入版控——讀者不必先跑指令就看得到源碼與產物的對應：
