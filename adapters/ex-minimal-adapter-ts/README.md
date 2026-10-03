@@ -1,6 +1,6 @@
 # ex-minimal-adapter-ts
 
-[ex-minimal-project-ts](../../) 的 adapter 擴展。由專案以相對路徑直接編譯進來，不走套件解析：Node 的型別剝離不作用於 node_modules 底下的 .ts，擴展若包成套件就得先跑一次建置才裝得動；同時保持可發布形態——中繼欄位、參數宣告與授權都隨套件出貨，版號比照 promptex 的 alpha 原型套件。
+[ex-minimal-project-ts](../../) 的 adapter 擴展。由專案以相對路徑直接編譯進來，不走套件解析：Node 的型別剝離不作用於 node_modules 底下的 .ts，擴展若包成套件就得先跑一次建置才裝得動；同時保持可發布形態——中繼欄位、參數宣告與授權都隨套件出貨，版號是 alpha 預發布版。
 
 適配以 SDK 層實作，只用 `AdapterContext` 的公開介面。`emit` 的責任鏈固定四步：
 
@@ -29,6 +29,6 @@ npm publish --tag alpha --access public
 
 `prepack` 綁著 `tsc`，`npm publish` 會自己先建置；`files` 只放 `dist`、參數宣告、README 與 LICENSE。發到 `alpha` 標籤而非 `latest`：預發布版不該被 `npm install` 預設選中，安裝端寫 `npm install ex-minimal-plugin-ts@alpha`。
 
-SDK 依賴不必換：`peerDependencies` 與 `devDependencies` 的 `promptex-js: ^0.0.0` 在 registry 上對到的是 promptex-prototype 發的 `0.0.0` **介面樁**——型別與簽名逐字複製正式版、方法本體一律拋錯。發布驗證（尤其 `cargo publish` 的建置）拿它編得過；裝到消費端也裝得起來，但實際執行要靠工作區覆寫指向本地的正式版 SDK，否則第一個碰到樁的呼叫就會以「promptex 介面樁」開頭的錯誤中止。
+SDK 依賴是 `peerDependencies` 與 `devDependencies` 的 `promptex-js`，指向 registry 上正式發布的版本。發布驗證、消費端安裝與實際執行用的都是同一份 SDK。
 
 名稱刻意不帶 `promptex-adapter-` 前綴——那是給要被消費端搜尋到的套件用的；本擴展的定位是示範，改以 keywords 的 `promptex-adapter` 承載可搜尋性。

@@ -12,7 +12,7 @@ promptex 的最小 TypeScript 消費端專案，同時是 [promptex-resources-ts
 | `plugins/ex-minimal-plugin-ts/` | plugin 擴展，在改寫遍為每個 skill 與 rule 追加一行 |
 | `adapters/ex-minimal-adapter-ts/` | 第三方平台適配擴展，把同一份源碼投影成另一套平台原生產物 |
 
-兩份擴展是本專案的一部分：它們不自成工作區、不帶各自的消費專案、名稱也不加 registry 搜尋用的 `promptex-plugin-`／`promptex-adapter-` 前綴（改以 keywords 承載可搜尋性）。兩者同時保持可發布形態，中繼欄位與版號比照 promptex 的 alpha 原型套件，發布指令見各自的 README。`promptex.config.ts` 以相對路徑直接 import 兩份擴展的源碼，不走套件解析：Node 的型別剝離不作用於 `node_modules` 底下的 `.ts`，擴展若包成套件就得先跑一次建置才裝得動。
+兩份擴展是本專案的一部分：它們不自成工作區、不帶各自的消費專案、名稱也不加 registry 搜尋用的 `promptex-plugin-`／`promptex-adapter-` 前綴（改以 keywords 承載可搜尋性）。兩者同時保持可發布形態，中繼欄位齊備、版號是 alpha 預發布版，發布指令見各自的 README。`promptex.config.ts` 以相對路徑直接 import 兩份擴展的源碼，不走套件解析：Node 的型別剝離不作用於 `node_modules` 底下的 `.ts`，擴展若包成套件就得先跑一次建置才裝得動。
 
 ## 建置與產物
 
