@@ -41,11 +41,13 @@
   "packages": {
     "plugins/ex-minimal-plugin-ts": {
       "component": "ex-minimal-plugin-ts",
-      "release-type": "node"
+      "release-type": "node",
+      "initial-version": "1.0.0"
     },
     "adapters/ex-minimal-adapter-ts": {
       "component": "ex-minimal-adapter-ts",
-      "release-type": "node"
+      "release-type": "node",
+      "initial-version": "1.0.0"
     }
   }
 }
