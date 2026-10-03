@@ -1,0 +1,20 @@
+name: setup-workspace
+description: >
+  Workspace preparation shared by the jobs that check out a tag. The release scripts need only bash,
+  git, jq and gh, which the GitHub-hosted runner already ships, so this action installs no toolchain.
+inputs:
+  restore-from-default:
+    description: >
+      space-separated paths to take from the default branch instead of the checked-out ref. The
+      finalize job checks out a product tag, whose scripts/ are frozen at release time; the tooling
+      must come from the default branch or a fix landed after the tag is silently not used.
+    default: ""
+runs:
+  using: composite
+  steps:
+    - name: tooling from the default branch
+      if: inputs.restore-from-default != ''
+      shell: bash
+      run: |
+        git fetch --no-tags origin "${{ github.event.repository.default_branch }}"
+        git checkout FETCH_HEAD -- ${{ inputs.restore-from-default }}

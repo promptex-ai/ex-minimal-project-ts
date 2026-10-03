@@ -1,0 +1,51 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "$comment": "Single config for both package units. Versioning happens only on release/v* branches: cut-release.sh copies this file onto the branch filtered to the train's units and, at a prerelease stage, switches it to prerelease mode; finalize-release.sh --phase ga switches it back. The two units share one version via linked-versions. The project at the repo root is not a unit and never releases.",
+  "include-component-in-tag": true,
+  "include-v-in-tag": true,
+  "tag-separator": "/",
+  "separate-pull-requests": false,
+  "bump-minor-pre-major": true,
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Added"
+    },
+    {
+      "type": "fix",
+      "section": "Fixed"
+    },
+    {
+      "type": "perf",
+      "section": "Changed"
+    },
+    {
+      "type": "deps",
+      "section": "Changed"
+    },
+    {
+      "type": "revert",
+      "section": "Changed"
+    }
+  ],
+  "plugins": [
+    {
+      "type": "linked-versions",
+      "groupName": "ex-minimal-ts",
+      "components": [
+        "ex-minimal-plugin-ts",
+        "ex-minimal-adapter-ts"
+      ]
+    }
+  ],
+  "packages": {
+    "plugins/ex-minimal-plugin-ts": {
+      "component": "ex-minimal-plugin-ts",
+      "release-type": "node"
+    },
+    "adapters/ex-minimal-adapter-ts": {
+      "component": "ex-minimal-adapter-ts",
+      "release-type": "node"
+    }
+  }
+}

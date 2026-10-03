@@ -142,6 +142,9 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
+# 發布腳本的暫存（稽核記錄、打包產物）。
+/tmp/
+
 # === promptex init 產生的忽略規則（重跑以本行判定，勿改寫）===
 # 框架的建置快取。整個 .promptex/ 不忽略：查詢進入點的覆寫檔 .promptex/query
 # 是作者手寫的內容，要入版控；匯出的 .promptex/preview/ 入不入版控由你決定。

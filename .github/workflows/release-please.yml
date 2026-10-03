@@ -1,0 +1,81 @@
+name: release-please
+
+# 兩個套件的升版引擎，只在發布分支執行：main 不帶版號 commit。
+# cut-release.sh 把 release-please-config.json 縮到本班單元並依起始階段切 prerelease 模式，
+# advance-release.sh 推進階段（alpha → beta → rc），finalize-release.sh --phase ga 切回正式模式。
+# 每個階段建立單元 tag 後，本檔都派送 publish.yml，並帶上發版的路徑與發布分支所在的階段：
+# npm 以階段名作 dist-tag，GA 才是 latest。
+
+on:
+  push:
+    branches:
+      - "release/**"
+      # 合回用的中介分支不是發布分支，不該再跑一次 release-please。
+      - "!release/**--to-main"
+    paths:
+      - "plugins/**"
+      - "adapters/**"
+      - "release-please-config.json"
+      - ".release-please-manifest.json"
+  # 不提供 workflow_dispatch：在 main 上手動觸發會對 main 開版號 PR，違反主線不升版
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    # 本倉庫公開，組織的 self-hosted runner 群組不開放給公開倉庫，所以跑 GitHub 託管的 runner。
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - id: rp
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ github.token }}
+          target-branch: ${{ github.ref_name }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Summary
+        run: |
+          {
+            echo "### release-please on \`${GITHUB_REF_NAME}\`"
+            echo "- releases_created: ${{ steps.rp.outputs.releases_created }}"
+            echo "- prs_created: ${{ steps.rp.outputs.prs_created }}"
+            echo "- paths_released: ${{ steps.rp.outputs.paths_released }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # 每個階段都發布：兩個套件同版、tag 打在同一個 commit，publish.yml 的 ref 取第一個發版路徑的 tag。
+      # 階段取自發布分支的設定（train_stage），隨派送帶給 publish.yml，它再逐單元核對版號屬於這個階段，
+      # 派錯階段時停下而不是把預發布版掛上 latest。
+      - name: Dispatch publish.yml
+        if: steps.rp.outputs.releases_created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PATHS: ${{ steps.rp.outputs.paths_released }}
+          OUTPUTS: ${{ toJSON(steps.rp.outputs) }}
+        run: |
+          pkgs="$(jq -c . <<<"$PATHS")"
+          if [[ "$pkgs" == "[]" ]]; then echo "no packages in this release"; exit 0; fi
+          first="$(jq -r '.[0]' <<<"$pkgs")"
+          tag="$(jq -r --arg k "${first}--tag_name" '.[$k] // empty' <<<"$OUTPUTS")"
+          [[ -n "$tag" ]] || { echo "no tag_name output for ${first}" >&2; exit 1; }
+          stage="$(bash -c 'source scripts/lib/common.sh && train_stage')"
+          echo "dispatch publish.yml at ${tag} for ${pkgs}（stage ${stage}）"
+          gh workflow run publish.yml --ref "$tag" -f paths="$pkgs" -f stage="$stage"

@@ -21,13 +21,9 @@
 
 ## 發布
 
-```bash
-npm install
-npm pack --dry-run
-npm publish --access public
-```
+發布走專案的發布流程（Trusted Publishing），不在套件目錄手動發布，步驟見專案根 [README 的「發布」一節](../../README.md#發布)。
 
-`prepack` 綁著 `tsc`，`npm publish` 會自己先建置；`files` 只放 `dist`、參數宣告、README 與 LICENSE。1.0.0 是正式版，發到預設的 `latest` 標籤，安裝端直接寫 `npm install ex-minimal-adapter-ts`。
+`prepack` 綁著 `tsc`，打包時會先建置；`files` 只放 `dist`、參數宣告、README 與 LICENSE。1.0.0 是正式版，發到預設的 `latest` 標籤，安裝端直接寫 `npm install ex-minimal-adapter-ts`。
 
 SDK 依賴是 `peerDependencies` 與 `devDependencies` 的 `promptex-js`，指向 registry 上正式發布的版本。發布驗證、消費端安裝與實際執行用的都是同一份 SDK。
 
