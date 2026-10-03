@@ -1,0 +1,6 @@
+1.0.0
+#
+# 由發布腳本在首次發布、推進階段或 GA 時寫入，用途只有一個：讓帶 Release-As footer 的
+# commit 觸及本單元路徑且非空。發布結束前會被刪除，不會進入預設分支或發布產物。
+# 理由見 scripts/lib/release-stages.sh 的 release_as_commit 註解。
+# released from release/v1.0 at 2026-10-03T16:54:48Z
