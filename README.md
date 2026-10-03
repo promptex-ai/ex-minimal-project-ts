@@ -64,34 +64,9 @@ npx promptex build --install .
 
 npm 端兩個套件都要登記 Trusted Publisher：owner `promptex-ai`、repo `ex-minimal-project-ts`、workflow `publish.yml`、environment 留空。`publish.yml` 不使用任何 token，發布時帶 provenance。
 
-### 發布 1.0.0
+### 發布新版本
 
-兩個單元還沒有單元 tag，所以 `cut-release.sh` 把它們當首次發布：起始版號取 `--line` 的 `<X.Y>.0`，並各補一個帶 `Release-As` 的 commit 釘住版號。`--stage ga` 讓第一個 Release PR 就是正式版。
-
-1. 試跑，確認輸出列出兩個單元的 `Release-As 1.0.0` 與 `linked-versions`：
-
-   ```bash
-   bash scripts/release/cut-release.sh --line 1.0 --units ex-minimal-plugin-ts,ex-minimal-adapter-ts --stage ga --dry-run
-   ```
-
-2. 拿掉 `--dry-run` 再跑一次。腳本在本機切出 `release/v1.0`、提交縮小後的設定與兩個 `Release-As` commit，確認後推送分支。
-3. `release-please.yml` 在 `release/v1.0` 上開 Release PR，內容是兩個套件的 CHANGELOG 與 manifest 的 1.0.0。合併它。
-4. `release-please.yml` 再跑一次，建立 `ex-minimal-plugin-ts/v1.0.0` 與 `ex-minimal-adapter-ts/v1.0.0` 兩個 tag，並派送 `publish.yml` 把兩個套件以 dist-tag `latest` 發布到 npm。
-5. 在 `release/v1.0` 上合回 main。腳本推送 `release/v1.0--to-main` 並開 PR：
-
-   ```bash
-   bash scripts/release/finalize-release.sh --line 1.0 --phase merge-back --product-version 1.0.0
-   ```
-
-6. 確認 PR 內容後收尾。腳本以 squash 合併 PR、在發布分支的最後一個 commit 打產品 tag `v1.0.0`、刪除發布分支，推上的 tag 觸發 `release-line-finalize.yml`：
-
-   ```bash
-   bash scripts/release/finalize-release.sh --line 1.0 --phase close --product-version 1.0.0
-   ```
-
-### 之後的發布
-
-之後的版號全由 release-please 依 commit 計算。不帶 `--stage` 時從 alpha 開始，每個預發布階段都發布到 npm，dist-tag 是階段名。每個階段都先合併該階段的 Release PR、等 `publish.yml` 發布完，再推進到下一個階段：
+版號全由 release-please 依 commit 計算。不帶 `--stage` 時從 alpha 開始，每個預發布階段都發布到 npm，dist-tag 是階段名。每個階段都先合併該階段的 Release PR、等 `publish.yml` 發布完，再推進到下一個階段：
 
 ```bash
 bash scripts/release/cut-release.sh --line 1.1 --units ex-minimal-plugin-ts,ex-minimal-adapter-ts
@@ -99,4 +74,20 @@ bash scripts/release/advance-release.sh --line 1.1 --to beta
 bash scripts/release/advance-release.sh --line 1.1 --to ga --product-version 1.1.0
 ```
 
-推進到 ga 後，照「發布 1.0.0」的第 5、6 步合回 main 並收尾。產品線已有 `vX.Y.Z` 時，修補發布要從最後一個產品 tag 切：`cut-release.sh --line 1.0 --units ... --from v1.0.0`。
+推進到 ga 後，照「合回 main 與收尾」一節做。產品線已有 `vX.Y.Z` 時，修補發布要從最後一個產品 tag 切：`cut-release.sh --line 1.0 --units ex-minimal-plugin-ts,ex-minimal-adapter-ts --from v1.0.0`。
+
+### 合回 main 與收尾
+
+1. 在發布分支上合回 main。腳本推送 `release/v<X.Y>--to-main` 並開 PR：
+
+   ```bash
+   bash scripts/release/finalize-release.sh --line 1.1 --phase merge-back --product-version 1.1.0
+   ```
+
+2. 確認 PR 內容後收尾。腳本以 squash 合併 PR、在發布分支的最後一個 commit 打產品 tag `v<X.Y.Z>`、刪除發布分支，推上的 tag 觸發 `release-line-finalize.yml`：
+
+   ```bash
+   bash scripts/release/finalize-release.sh --line 1.1 --phase close --product-version 1.1.0
+   ```
+
+`publish.yml` 失敗但單元 tag 已建立時，不用重切發布分支。修好原因後在第一個單元 tag 上重新派送，`publish-units.sh` 會跳過已發布的版號：`gh workflow run publish.yml --ref <第一個單元 tag> -f paths='<單元路徑的 JSON 陣列>' -f stage=<階段>`。
