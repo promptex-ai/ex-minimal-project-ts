@@ -1,6 +1,6 @@
 # ex-minimal-plugin-ts
 
-[ex-minimal-project-ts](../../) 的 plugin 擴展。由專案以相對路徑直接編譯進來，不走套件解析：Node 的型別剝離不作用於 node_modules 底下的 .ts，擴展若包成套件就得先跑一次建置才裝得動；同時保持可發布形態——中繼欄位、參數宣告與授權都隨套件出貨，版號是 alpha 預發布版。
+[ex-minimal-project-ts](../../) 的 plugin 擴展。由專案以相對路徑直接編譯進來，不走套件解析：Node 的型別剝離不作用於 node_modules 底下的 .ts，擴展若包成套件就得先跑一次建置才裝得動；同時保持可發布形態——中繼欄位、參數宣告與授權都隨套件出貨，版號是 1.0.0 正式版。
 
 plugin 掛在求值管線的三個生命週期上，順序固定：
 
@@ -23,10 +23,10 @@ plugin 產出的是節點而非檔案：要落地的內容以 `define*` 新增�
 ```bash
 npm install
 npm pack --dry-run
-npm publish --tag alpha --access public
+npm publish --access public
 ```
 
-`prepack` 綁著 `tsc`，`npm publish` 會自己先建置；`files` 只放 `dist`、參數宣告、README 與 LICENSE。發到 `alpha` 標籤而非 `latest`：預發布版不該被 `npm install` 預設選中，安裝端寫 `npm install ex-minimal-plugin-ts@alpha`。
+`prepack` 綁著 `tsc`，`npm publish` 會自己先建置；`files` 只放 `dist`、參數宣告、README 與 LICENSE。1.0.0 是正式版，發到預設的 `latest` 標籤，安裝端直接寫 `npm install ex-minimal-plugin-ts`。
 
 SDK 依賴是 `peerDependencies` 與 `devDependencies` 的 `promptex-js`，指向 registry 上正式發布的版本。發布驗證、消費端安裝與實際執行用的都是同一份 SDK。
 

@@ -1,7 +1,7 @@
 {
   "name": "ex-minimal-adapter-ts",
-  "version": "0.0.1-alpha.1",
-  "description": "promptex 第三方平台適配擴展範例（alpha）：把同一份源碼投影成另一套平台原生產物",
+  "version": "1.0.0",
+  "description": "promptex 第三方平台適配擴展範例：把同一份源碼投影成另一套平台原生產物",
   "license": "Apache-2.0",
   "author": "promptex-ai",
   "homepage": "https://github.com/promptex-ai/ex-minimal-project-ts#readme",
