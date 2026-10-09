@@ -43,11 +43,11 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "promptex-js": "^1.0.1"
+    "promptex-js": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
-    "promptex-js": "^1.0.1",
+    "promptex-js": "^1.1.0",
     "typescript": "^7.0.2"
   }
 }
