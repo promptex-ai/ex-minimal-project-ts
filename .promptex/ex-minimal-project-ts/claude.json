@@ -1,7 +1,7 @@
 {
   "formatVersion": "1.1",
   "platform": "claude",
-  "engineVersion": "1.0.1",
+  "engineVersion": "1.1.0",
   "files": [
     {
       "path": ".claude/rules/example-rule.md",
