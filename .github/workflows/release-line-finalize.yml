@@ -60,7 +60,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag || github.ref_name }}
           VERSION: ${{ steps.snap.outputs.version }}
-        run: gh release create "$TAG" --title "Product v${VERSION}" --notes-file snapshot.md || echo "release exists"
+        run: gh release create "$TAG" --title "$TAG" --notes-file snapshot.md || echo "release exists"
       # 治理同步：這一版的 release PR 已合回 main，排入這一版（label release:vX.Y.Z）的 Issue 全部關閉。
       # GitHub 在 commit 進入預設分支後才非同步關閉 Issue，所以仍開著的 Issue 會重查幾次再判定。
       - name: Governance sync
